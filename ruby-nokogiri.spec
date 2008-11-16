@@ -1,4 +1,4 @@
-Summary:	an HTML, XML, SAX, and Reader parser. 
+Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-nokogiri
 Version:	1.0.6
 Release:	1
@@ -13,12 +13,12 @@ BuildRequires:	setup.rb = 3.3.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Nokogiri is an HTML parser with XPath support for document searching, CSS3
-selector support for document searching, an XML/HTML builder, and drop in
-replacement for Hpricot (though not bug for bug)
+Nokogiri is an HTML parser with XPath support for document searching,
+CSS3 selector support for document searching, an XML/HTML builder, and
+drop in replacement for Hpricot (though not bug for bug).
 
-Nokogiri parses and searches XML/HTML very quickly, and also has correctly
-implemented CSS3 selector support as well as XPath support.
+Nokogiri parses and searches XML/HTML very quickly, and also has
+correctly implemented CSS3 selector support as well as XPath support.
 
 It also features an Hpricot compatibility layer to help ease the
 change to using correct CSS and XPath. 
