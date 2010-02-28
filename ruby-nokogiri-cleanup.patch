@@ -1,0 +1,35 @@
+diff --git a/bin/nokogiri b/bin/nokogiri
+index 9449518..ff1419d 100755
+--- a/bin/nokogiri
++++ b/bin/nokogiri
+@@ -3,7 +3,6 @@ require 'optparse'
+ require 'open-uri'
+ require 'irb'
+ require 'uri'
+-require 'rubygems'
+ require 'nokogiri'
+ 
+ opts = OptionParser.new do |opts|
+diff --git a/lib/nokogiri.rb b/lib/nokogiri.rb
+index b04468f..f685244 100644
+--- a/lib/nokogiri.rb
++++ b/lib/nokogiri.rb
+@@ -1,18 +1,7 @@
+ # -*- coding: utf-8 -*-
+-# Modify the PATH on windows so that the external DLLs will get loaded.
+
+ require 'rbconfig'
+-ENV['PATH'] = [File.expand_path(
+-  File.join(File.dirname(__FILE__), "..", "ext", "nokogiri")
+-), ENV['PATH']].compact.join(';') if RbConfig::CONFIG['host_os'] =~ /(mswin|mingw)/i
+-
+-if ENV['NOKOGIRI_FFI'] || RUBY_PLATFORM =~ /java/
+-  require 'ffi'
+-  require 'nokogiri/ffi/libxml'
+-else
+   require 'nokogiri/nokogiri'
+-end
+-
+ require 'nokogiri/version'
+ require 'nokogiri/version_warning'
+ require 'nokogiri/syntax_error'
