@@ -27,12 +27,28 @@ It also features an Hpricot compatibility layer to help ease the
 change to using correct CSS and XPath. 
 
 %package rdoc
-Summary:	Documentation files for %{pkgname}
+Summary:	HTML documentation for %{pkgname}
+Summary(pl.UTF-8):	Dokumentacja w formacie HTML dla %{pkgname}
 Group:		Documentation
 Requires:	ruby >= 1:1.8.7-4
 
 %description rdoc
-Documentation files for %{pkgname}.
+HTML documentation for %{pkgname}.
+
+%description rdoc -l pl.UTF-8
+Dokumentacja w formacie HTML dla %{pkgname}.
+
+%package ri
+Summary:	ri documentation for %{pkgname}
+Summary(pl.UTF-8):	Dokumentacja w formacie ri dla %{pkgname}
+Group:		Documentation
+Requires:	ruby
+
+%description ri
+ri documentation for %{pkgname}.
+
+%description ri -l pl.UTF-8
+Dokumentacji w formacie ri dla %{pkgname}.
 
 %prep
 %setup -q -c
@@ -51,6 +67,7 @@ ruby setup.rb setup
 
 rdoc --op rdoc lib
 rdoc --ri --op ri lib
+rm ri/created.rid
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -76,4 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 %files rdoc
 %defattr(644,root,root,755)
 %{ruby_rdocdir}/%{name}-%{version}
+
+%files ri
+%defattr(644,root,root,755)
 %{ruby_ridir}/Nokogiri
+%{ruby_ridir}/XSD
