@@ -12,6 +12,7 @@ URL:		http://nokogiri.rubyforge.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	rpmbuild(macros) >= 1.277
+BuildRequires:	ruby-devel
 BuildRequires:	setup.rb >= 3.3.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -24,7 +25,7 @@ Nokogiri parses and searches XML/HTML very quickly, and also has
 correctly implemented CSS3 selector support as well as XPath support.
 
 It also features an Hpricot compatibility layer to help ease the
-change to using correct CSS and XPath. 
+change to using correct CSS and XPath.
 
 %package rdoc
 Summary:	HTML documentation for %{pkgname}
@@ -56,7 +57,7 @@ Dokumentacji w formacie ri dla %{pkgname}.
 find -newer README.rdoc -o -print | xargs touch --reference %{SOURCE0}
 %patch0 -p1
 
-cp /usr/share/setup.rb .
+cp %{_datadir}/setup.rb .
 
 %build
 ruby setup.rb config \
