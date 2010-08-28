@@ -1,19 +1,24 @@
-%define pkgname nokogiri
+
+%define gitrev 6dbda31
+%define gitauthor tenderlove
+%define gitproject nokogiri
+
 Summary:	An HTML, XML, SAX, and Reader parser
-Name:		ruby-%{pkgname}
-Version:	1.4.1
+Name:		ruby-nokogiri
+Version:	1.4.3.1
 Release:	1
 License:	Ruby's
 Group:		Development/Languages
-Source0:	http://rubygems.org/downloads/%{pkgname}-%{version}.gem
-# Source0-md5:	13405908a02c71daf1f302392ffa1507
-Patch0:		%{name}-cleanup.patch
-URL:		http://nokogiri.rubyforge.org/
+Source0:	http://download.github.com/%{gitauthor}-%{gitproject}-REL_%{version}-0-g%{gitrev}.tar.gz
+# Source0-md5:	520dec8ef8ac1c7ca42f508ed016784d
+Patch0:		%{name}-binpath.patch
+URL:		http://nokogiri.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	rpmbuild(macros) >= 1.277
 BuildRequires:	ruby-devel
-BuildRequires:	setup.rb >= 3.3.1
+BuildRequires:	setup.rb = 3.4.1
+%{?ruby_mod_ver_requires_eq}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -52,19 +57,16 @@ ri documentation for %{pkgname}.
 Dokumentacji w formacie ri dla %{pkgname}.
 
 %prep
-%setup -q -c
-%{__tar} xf %{SOURCE0} -O data.tar.gz | %{__tar} xz
-find -newer README.rdoc -o -print | xargs touch --reference %{SOURCE0}
+%setup -q -n %{gitauthor}-%{gitproject}-17c2ced
 %patch0 -p1
-
+find -newer README.rdoc -o -print | xargs touch --reference %{SOURCE0}
 cp %{_datadir}/setup.rb .
-
-%build
 ruby setup.rb config \
-	--rbdir=%{ruby_rubylibdir} \
-	--sodir=%{ruby_archdir}
-
+	--installdirs=std
 ruby setup.rb setup
+
+racc -l -o lib/nokogiri/css/generated_parser.rb lib/nokogiri/css/parser.y
+rex --independent -o lib/nokogiri/css/generated_tokenizer.rb lib/nokogiri/css/tokenizer.rex
 
 rdoc --op rdoc lib
 rdoc --ri --op ri lib
