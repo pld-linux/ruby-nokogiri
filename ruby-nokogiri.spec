@@ -17,7 +17,7 @@ BuildRequires:	libxslt-devel
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.656
 BuildRequires:	ruby-devel
-BuildRequires:	ruby-racc
+BuildRequires:	ruby-rdoc
 BuildRequires:	setup.rb >= 3.4.1
 %{?ruby_mod_ver_requires_eq}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -66,9 +66,6 @@ ruby setup.rb config \
 	--rbdir=%{ruby_vendorlibdir} \
 	--sodir=%{ruby_vendorarchdir}
 ruby setup.rb setup
-
-#racc -l -o lib/nokogiri/css/generated_parser.rb lib/nokogiri/css/parser.y
-#rex --independent -o lib/nokogiri/css/generated_tokenizer.rb lib/nokogiri/css/tokenizer.rex
 
 %if %{with tests}
 # Ah....
