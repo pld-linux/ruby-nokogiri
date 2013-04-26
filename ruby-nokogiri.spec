@@ -113,10 +113,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGELOG.rdoc README.rdoc
-#%attr(755,root,root) %{_bindir}/nokogiri
-#%{ruby_vendorlibdir}/nokogiri.rb
-#%{ruby_vendorlibdir}/nokogiri
-#%{ruby_vendorlibdir}/xsd
+%attr(755,root,root) %{_bindir}/nokogiri
+%{ruby_vendorlibdir}/nokogiri.rb
+%{ruby_vendorlibdir}/nokogiri
+%{ruby_vendorlibdir}/xsd
 %attr(755,root,root) %{ruby_vendorarchdir}/nokogiri.so
 
 %files rdoc
