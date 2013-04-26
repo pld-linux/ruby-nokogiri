@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without	tests		# build without tests
 
-%global	gemname		nokogiri
+%define	gemname		nokogiri
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{gemname}
 Version:	1.5.9
@@ -19,7 +19,6 @@ BuildRequires:	rpmbuild(macros) >= 1.656
 BuildRequires:	ruby-devel
 BuildRequires:	ruby-rdoc
 BuildRequires:	setup.rb >= 3.4.1
-%{?ruby_mod_ver_requires_eq}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -114,10 +113,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGELOG.rdoc README.rdoc
-%attr(755,root,root) %{_bindir}/nokogiri
-%{ruby_vendorlibdir}/nokogiri.rb
-%{ruby_vendorlibdir}/nokogiri
-%{ruby_vendorlibdir}/xsd
+#%attr(755,root,root) %{_bindir}/nokogiri
+#%{ruby_vendorlibdir}/nokogiri.rb
+#%{ruby_vendorlibdir}/nokogiri
+#%{ruby_vendorlibdir}/xsd
 %attr(755,root,root) %{ruby_vendorarchdir}/nokogiri.so
 
 %files rdoc
