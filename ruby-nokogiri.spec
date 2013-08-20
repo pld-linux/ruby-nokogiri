@@ -2,20 +2,20 @@
 # Conditional build:
 %bcond_without	tests		# build without tests
 
-%define	gemname		nokogiri
+%define	pkgname		nokogiri
 Summary:	An HTML, XML, SAX, and Reader parser
-Name:		ruby-%{gemname}
+Name:		ruby-%{pkgname}
 Version:	1.5.9
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages
-Source0:	http://gems.rubyforge.org/gems/%{gemname}-%{version}.gem
+Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
 # Source0-md5:	cf4cf8b7de5a410fa1f64d07461d68ed
 URL:		http://nokogiri.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	rpm-rubyprov
-BuildRequires:	rpmbuild(macros) >= 1.656
+BuildRequires:	rpmbuild(macros) >= 1.665
 BuildRequires:	ruby-devel
 BuildRequires:	ruby-rdoc
 BuildRequires:	setup.rb >= 3.4.1
@@ -57,10 +57,11 @@ ri documentation for %{pkgname}.
 Dokumentacji w formacie ri dla %{pkgname}.
 
 %prep
-%setup -q -n %{gemname}-%{version}
+%setup -q -n %{pkgname}-%{version}
 cp %{_datadir}/setup.rb .
 
 %build
+%__gem_helper spec
 ruby setup.rb config \
 	--rbdir=%{ruby_vendorlibdir} \
 	--sodir=%{ruby_vendorarchdir}
@@ -100,10 +101,11 @@ rm ri/cache.ri
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{ruby_archdir},%{ruby_rubylibdir},%{ruby_ridir},%{ruby_rdocdir}}
+install -d $RPM_BUILD_ROOT{%{ruby_archdir},%{ruby_rubylibdir},%{ruby_ridir},%{ruby_rdocdir},%{ruby_specdir}}
 ruby setup.rb install \
 	--prefix=$RPM_BUILD_ROOT
 
+cp -p %{pkgname}-%{version}.gemspec $RPM_BUILD_ROOT%{ruby_specdir}
 cp -a ri/* $RPM_BUILD_ROOT%{ruby_ridir}
 cp -a rdoc $RPM_BUILD_ROOT%{ruby_rdocdir}/%{name}-%{version}
 
@@ -118,6 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 %{ruby_vendorlibdir}/nokogiri
 %{ruby_vendorlibdir}/xsd
 %attr(755,root,root) %{ruby_vendorarchdir}/nokogiri.so
+%{ruby_specdir}/%{pkgname}-%{version}.gemspec
 
 %files rdoc
 %defattr(644,root,root,755)
