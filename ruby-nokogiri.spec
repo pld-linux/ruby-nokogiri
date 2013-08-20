@@ -5,12 +5,12 @@
 %define	pkgname		nokogiri
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
-Version:	1.5.9
-Release:	2
+Version:	1.5.10
+Release:	1
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
-# Source0-md5:	cf4cf8b7de5a410fa1f64d07461d68ed
+# Source0-md5:	5390d13bc06385f063e4282f3ed4204d
 URL:		http://nokogiri.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
@@ -62,10 +62,10 @@ cp %{_datadir}/setup.rb .
 
 %build
 %__gem_helper spec
-ruby setup.rb config \
+%{__ruby} setup.rb config \
 	--rbdir=%{ruby_vendorlibdir} \
-	--sodir=%{ruby_vendorarchdir}
-ruby setup.rb setup
+	--sodir=%{ruby_vendorarchdir}/%{pkgname}
+%{__ruby} setup.rb setup
 
 %if %{with tests}
 # Ah....
@@ -83,7 +83,7 @@ done
 
 # Observed fail on test_subclass_parse(Nokogiri::XML::TestDocument)
 # Need investigation. For now anyway build
-ruby -I.:ext:lib:test \
+%{__ruby} -I.:ext:lib:test \
 	-rubygems \
 	-e \
 	"require 'minitest/autorun' ; Dir.glob('test/**/test_*.rb'){|f| require f}" || \
@@ -102,7 +102,7 @@ rm ri/cache.ri
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{ruby_archdir},%{ruby_rubylibdir},%{ruby_ridir},%{ruby_rdocdir},%{ruby_specdir}}
-ruby setup.rb install \
+%{__ruby} setup.rb install \
 	--prefix=$RPM_BUILD_ROOT
 
 cp -p %{pkgname}-%{version}.gemspec $RPM_BUILD_ROOT%{ruby_specdir}
@@ -115,11 +115,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGELOG.rdoc README.rdoc
+%lang(ja) %doc CHANGELOG.ja.rdoc
 %attr(755,root,root) %{_bindir}/nokogiri
 %{ruby_vendorlibdir}/nokogiri.rb
 %{ruby_vendorlibdir}/nokogiri
 %{ruby_vendorlibdir}/xsd
-%attr(755,root,root) %{ruby_vendorarchdir}/nokogiri.so
+%dir %{ruby_vendorarchdir}/nokogiri
+%attr(755,root,root) %{ruby_vendorarchdir}/nokogiri/nokogiri.so
 %{ruby_specdir}/%{pkgname}-%{version}.gemspec
 
 %files rdoc
