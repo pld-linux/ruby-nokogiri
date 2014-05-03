@@ -5,18 +5,19 @@
 %define	pkgname		nokogiri
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
-Version:	1.5.10
-Release:	2
+Version:	1.6.1
+Release:	1
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
-# Source0-md5:	5390d13bc06385f063e4282f3ed4204d
+# Source0-md5:	ecab2ea5ec330c8bb25fe5f13dfd8ab4
 URL:		http://nokogiri.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.665
 BuildRequires:	ruby-devel
+BuildRequires:	ruby-mini_portile
 BuildRequires:	ruby-rdoc
 BuildRequires:	setup.rb >= 3.4.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
