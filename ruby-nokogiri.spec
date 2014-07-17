@@ -6,7 +6,7 @@
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
 Version:	1.5.10
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
