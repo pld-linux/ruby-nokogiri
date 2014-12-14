@@ -1,0 +1,27 @@
+mini_portile is used at extension build time (ext/nokogiri/extconf.rb), which
+we do when building rpm it is not needed at runtime of rpm package install
+
+while gems do need it runtime as it's when they compile ext.
+
+--- nokogiri-1.6.5/Gemfile~	2014-12-14 20:18:18.000000000 +0200
++++ nokogiri-1.6.5/Gemfile	2014-12-14 20:19:18.699925589 +0200
+@@ -4,7 +4,7 @@
+ 
+ source "https://rubygems.org/"
+ 
+-gem "mini_portile", "~>0.6.0"
++gem "mini_portile", "~>0.6.0", :group => [:development, :test]
+ 
+ gem "rdoc", "~>4.0", :group => [:development, :test]
+ gem "hoe-bundler", ">=1.1", :group => [:development, :test]
+--- nokogiri-1.6.5/nokogiri-1.6.5.gemspec~	2014-12-14 19:15:48.000000000 +0200
++++ nokogiri-1.6.5/nokogiri-1.6.5.gemspec	2014-12-14 20:14:15.957664126 +0200
+@@ -25,7 +25,7 @@
+     s.specification_version = 4
+ 
+     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+-      s.add_runtime_dependency(%q<mini_portile>, ["~> 0.6.0"])
++      s.add_development_dependency(%q<mini_portile>, ["~> 0.6.0"])
+       s.add_development_dependency(%q<rdoc>, ["~> 4.0"])
+       s.add_development_dependency(%q<hoe-bundler>, [">= 1.1"])
+       s.add_development_dependency(%q<hoe-debugging>, [">= 1.0.3"])

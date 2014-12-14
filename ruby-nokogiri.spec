@@ -2,6 +2,9 @@
 # Conditional build:
 %bcond_without	tests		# build without tests
 
+# NOTE
+# - changelog https://github.com/sparklemotion/nokogiri/blob/master/CHANGELOG.rdoc
+
 %define	pkgname		nokogiri
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
@@ -11,14 +14,17 @@ License:	MIT
 Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
 # Source0-md5:	ac570aa0120b92185606919818d6ff92
+Patch0:		deps.patch
 URL:		http://nokogiri.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.665
 BuildRequires:	ruby-devel
-BuildRequires:	ruby-mini_portile
+BuildRequires:	ruby-mini_portile < 0.7
+BuildRequires:	ruby-mini_portile >= 0.6.0
 BuildRequires:	ruby-rdoc
+BuildRequires:	sed >= 4.0
 BuildRequires:	setup.rb >= 3.4.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -59,10 +65,16 @@ Dokumentacji w formacie ri dla %{pkgname}.
 
 %prep
 %setup -q -n %{pkgname}-%{version}
-cp %{_datadir}/setup.rb .
+
+cp -p %{_datadir}/setup.rb .
 
 %build
 %__gem_helper spec
+
+# yes. this is after writing gemspec.
+# making gemspec from source is hard
+%patch0 -p1
+
 %{__ruby} setup.rb config \
 	--rbdir=%{ruby_vendorlibdir} \
 	--sodir=%{ruby_vendorarchdir}/%{pkgname}
