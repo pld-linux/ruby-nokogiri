@@ -9,7 +9,7 @@
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
 Version:	1.6.5
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
@@ -74,6 +74,9 @@ cp -p %{_datadir}/setup.rb .
 # yes. this is after writing gemspec.
 # making gemspec from source is hard
 %patch0 -p1
+
+# 1.6.0 needs this
+export NOKOGIRI_USE_SYSTEM_LIBRARIES=yes
 
 %{__ruby} setup.rb config \
 	--rbdir=%{ruby_vendorlibdir} \
