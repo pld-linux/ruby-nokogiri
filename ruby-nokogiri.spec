@@ -15,6 +15,7 @@ Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
 # Source0-md5:	ac570aa0120b92185606919818d6ff92
 Patch0:		deps.patch
+Patch1:		nogem.patch
 URL:		http://nokogiri.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
@@ -65,6 +66,9 @@ Dokumentacji w formacie ri dla %{pkgname}.
 
 %prep
 %setup -q -n %{pkgname}-%{version}
+%{__sed} -i -e '1 s,#!.*ruby,#!%{__ruby},' bin/*
+
+%patch1 -p1
 
 cp -p %{_datadir}/setup.rb .
 
