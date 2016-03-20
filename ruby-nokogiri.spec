@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	tests		# build without tests
+%bcond_without	doc			# don't build ri/rdoc
 
 # NOTE
 # - changelog https://github.com/sparklemotion/nokogiri/blob/master/CHANGELOG.rdoc
@@ -9,7 +10,7 @@
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
 Version:	1.6.5
-Release:	5
+Release:	6
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
@@ -45,6 +46,9 @@ Summary:	HTML documentation for %{pkgname}
 Summary(pl.UTF-8):	Dokumentacja w formacie HTML dla %{pkgname}
 Group:		Documentation
 Requires:	ruby >= 1:1.8.7-4
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description rdoc
 HTML documentation for %{pkgname}.
@@ -57,6 +61,9 @@ Summary:	ri documentation for %{pkgname}
 Summary(pl.UTF-8):	Dokumentacja w formacie ri dla %{pkgname}
 Group:		Documentation
 Requires:	ruby
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description ri
 ri documentation for %{pkgname}.
@@ -67,7 +74,6 @@ Dokumentacji w formacie ri dla %{pkgname}.
 %prep
 %setup -q -n %{pkgname}-%{version}
 %{__sed} -i -e '1 s,#!.*ruby,#!%{__ruby},' bin/*
-
 %patch1 -p1
 
 cp -p %{_datadir}/setup.rb .
@@ -114,6 +120,7 @@ for f in $SKIPTEST; do
 done
 %endif
 
+%if %{with doc}
 rdoc --op rdoc lib
 rdoc --ri --op ri lib
 rm ri/Object/Nokogiri-i.ri
@@ -121,6 +128,7 @@ rm ri/Object/cdesc-Object.ri
 rm ri/lib/nokogiri/css/page-tokenizer_rex.ri
 rm ri/created.rid
 rm ri/cache.ri
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -129,8 +137,11 @@ install -d $RPM_BUILD_ROOT{%{ruby_archdir},%{ruby_rubylibdir},%{ruby_ridir},%{ru
 	--prefix=$RPM_BUILD_ROOT
 
 cp -p %{pkgname}-%{version}.gemspec $RPM_BUILD_ROOT%{ruby_specdir}
+
+%if %{with doc}
 cp -a ri/* $RPM_BUILD_ROOT%{ruby_ridir}
 cp -a rdoc $RPM_BUILD_ROOT%{ruby_rdocdir}/%{name}-%{version}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -147,6 +158,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{ruby_vendorarchdir}/nokogiri/nokogiri.so
 %{ruby_specdir}/%{pkgname}-%{version}.gemspec
 
+%if %{with doc}
 %files rdoc
 %defattr(644,root,root,755)
 %{ruby_rdocdir}/%{name}-%{version}
@@ -155,3 +167,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{ruby_ridir}/Nokogiri
 %{ruby_ridir}/XSD
+%endif
