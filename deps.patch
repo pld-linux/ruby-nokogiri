@@ -14,14 +14,14 @@ while gems do need it runtime as it's when they compile ext.
  
  gem "rdoc", "~>4.0", :group => [:development, :test]
  gem "hoe-bundler", ">=1.1", :group => [:development, :test]
---- nokogiri-1.6.5/nokogiri-1.6.5.gemspec~	2014-12-14 19:15:48.000000000 +0200
-+++ nokogiri-1.6.5/nokogiri-1.6.5.gemspec	2014-12-14 20:14:15.957664126 +0200
-@@ -25,7 +25,7 @@
+--- nokogiri-1.6.5/nokogiri-1.6.5.gemspec~	2017-10-26 21:31:49.000000000 +0300
++++ nokogiri-1.6.5/nokogiri-1.6.5.gemspec	2017-10-26 21:34:46.923726096 +0300
+@@ -27,7 +27,7 @@
      s.specification_version = 4
  
      if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
--      s.add_runtime_dependency(%q<mini_portile>, ["~> 0.6.0"])
-+      s.add_development_dependency(%q<mini_portile>, ["~> 0.6.0"])
-       s.add_development_dependency(%q<rdoc>, ["~> 4.0"])
-       s.add_development_dependency(%q<hoe-bundler>, [">= 1.1"])
-       s.add_development_dependency(%q<hoe-debugging>, [">= 1.0.3"])
+-      s.add_runtime_dependency(%q<mini_portile>.freeze, ["~> 0.6.0"])
++      s.add_development_dependency(%q<mini_portile>.freeze, ["~> 0.6.0"])
+       s.add_development_dependency(%q<rdoc>.freeze, ["~> 4.0"])
+       s.add_development_dependency(%q<hoe-bundler>.freeze, [">= 1.1"])
+       s.add_development_dependency(%q<hoe-debugging>.freeze, [">= 1.0.3"])
