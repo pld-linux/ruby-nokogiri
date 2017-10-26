@@ -10,7 +10,7 @@
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
 Version:	1.6.5
-Release:	7
+Release:	8
 License:	MIT
 Group:		Development/Languages
 Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
@@ -27,7 +27,7 @@ BuildRequires:	ruby-mini_portile < 0.7
 BuildRequires:	ruby-mini_portile >= 0.6.0
 BuildRequires:	ruby-rdoc
 BuildRequires:	sed >= 4.0
-BuildRequires:	setup.rb >= 3.4.1
+BuildRequires:	setup.rb >= 3.4.1-6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
