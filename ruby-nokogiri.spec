@@ -70,7 +70,7 @@ Dokumentacji w formacie ri dla %{pkgname}.
 %prep
 %setup -q -n %{pkgname}-%{version}
 %{__sed} -i -e '1 s,#!.*ruby,#!%{__ruby},' bin/*
-%patch1 -p1
+%patch -P1 -p1
 
 cp -p %{_datadir}/setup.rb .
 
@@ -79,7 +79,7 @@ cp -p %{_datadir}/setup.rb .
 
 # yes. this is after writing gemspec.
 # making gemspec from source is hard
-%patch0 -p1
+%patch -P0 -p1
 
 # 1.6.0 needs this
 export NOKOGIRI_USE_SYSTEM_LIBRARIES=yes
