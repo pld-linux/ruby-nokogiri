@@ -10,14 +10,15 @@
 Summary:	An HTML, XML, SAX, and Reader parser
 Name:		ruby-%{pkgname}
 Version:	1.6.5
-Release:	12
+Release:	13
 License:	MIT
 Group:		Development/Languages
-Source0:	http://gems.rubyforge.org/gems/%{pkgname}-%{version}.gem
+Source0:	https://rubygems.org/downloads/%{pkgname}-%{version}.gem
 # Source0-md5:	ac570aa0120b92185606919818d6ff92
 Patch0:		deps.patch
 Patch1:		nogem.patch
-URL:		http://nokogiri.org/
+Patch2:		libxml2.patch
+URL:		https://nokogiri.org/
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	rpm-rubyprov
@@ -69,18 +70,21 @@ Dokumentacji w formacie ri dla %{pkgname}.
 
 %prep
 %setup -q -n %{pkgname}-%{version}
+
 %{__sed} -i -e '1 s,#!.*ruby,#!%{__ruby},' bin/*
-%patch -P1 -p1
 
-cp -p %{_datadir}/setup.rb .
-
-%build
+%{__tar} xvf %{SOURCE0} metadata.gz
 %__gem_helper spec
 
 # yes. this is after writing gemspec.
 # making gemspec from source is hard
 %patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
+cp -p %{_datadir}/setup.rb .
+
+%build
 # 1.6.0 needs this
 export NOKOGIRI_USE_SYSTEM_LIBRARIES=yes
 

@@ -1,0 +1,101 @@
+--- nokogiri-1.6.5/ext/nokogiri/xml_syntax_error.c~	2025-09-06 16:03:17.000000000 +0200
++++ nokogiri-1.6.5/ext/nokogiri/xml_syntax_error.c	2025-09-06 16:08:26.989995852 +0200
+@@ -1,13 +1,13 @@
+ #include <xml_syntax_error.h>
+ 
+-void Nokogiri_error_array_pusher(void * ctx, xmlErrorPtr error)
++void Nokogiri_error_array_pusher(void * ctx, const xmlError *error)
+ {
+   VALUE list = (VALUE)ctx;
+   Check_Type(list, T_ARRAY);
+   rb_ary_push(list,  Nokogiri_wrap_xml_syntax_error(error));
+ }
+ 
+-void Nokogiri_error_raise(void * ctx, xmlErrorPtr error)
++void Nokogiri_error_raise(void * ctx, const xmlError *error)
+ {
+   rb_exc_raise(Nokogiri_wrap_xml_syntax_error(error));
+ }
+--- nokogiri-1.6.5/ext/nokogiri/xml_syntax_error.h~	2025-09-06 16:03:17.000000000 +0200
++++ nokogiri-1.6.5/ext/nokogiri/xml_syntax_error.h	2025-09-06 16:08:38.139995853 +0200
+@@ -5,8 +5,8 @@
+ 
+ void init_xml_syntax_error();
+ VALUE Nokogiri_wrap_xml_syntax_error(xmlErrorPtr error);
+-void Nokogiri_error_array_pusher(void * ctx, xmlErrorPtr error);
+-NORETURN(void Nokogiri_error_raise(void * ctx, xmlErrorPtr error));
++void Nokogiri_error_array_pusher(void * ctx, const xmlError *error);
++NORETURN(void Nokogiri_error_raise(void * ctx, const xmlError *error));
+ 
+ extern VALUE cNokogiriXmlSyntaxError;
+ #endif
+--- nokogiri-1.6.5/ext/nokogiri/xml_document.c~	2025-09-06 16:33:56.000000000 +0200
++++ nokogiri-1.6.5/ext/nokogiri/xml_document.c	2025-09-06 16:35:24.376662608 +0200
+@@ -491,7 +491,7 @@
+  * The block must return a non-nil, non-false value if the +obj+ passed in 
+  * should be included in the canonicalized document.
+  */
+-static VALUE canonicalize(int argc, VALUE* argv, VALUE self)
++static VALUE xml_doc_canonicalize(int argc, VALUE* argv, VALUE self)
+ {
+   VALUE mode;
+   VALUE incl_ns;
+@@ -573,7 +573,7 @@
+   rb_define_method(klass, "encoding", encoding, 0);
+   rb_define_method(klass, "encoding=", set_encoding, 1);
+   rb_define_method(klass, "version", version, 0);
+-  rb_define_method(klass, "canonicalize", canonicalize, -1);
++  rb_define_method(klass, "canonicalize", xml_doc_canonicalize, -1);
+   rb_define_method(klass, "dup", duplicate_document, -1);
+   rb_define_method(klass, "url", url, 0);
+   rb_define_method(klass, "create_entity", create_entity, -1);
+--- nokogiri-1.6.5/ext/nokogiri/xml_dtd.c~	2025-09-06 16:35:58.000000000 +0200
++++ nokogiri-1.6.5/ext/nokogiri/xml_dtd.c	2025-09-06 16:37:49.593329248 +0200
+@@ -1,6 +1,6 @@
+ #include <xml_dtd.h>
+ 
+-static void notation_copier(void *payload, void *data, xmlChar *name)
++static void notation_copier(void *payload, void *data, const xmlChar *name)
+ {
+   VALUE hash = (VALUE)data;
+   VALUE klass = rb_const_get(mNokogiriXml, rb_intern("Notation"));
+@@ -17,7 +17,7 @@
+   rb_hash_aset(hash, NOKOGIRI_STR_NEW2(name),notation);
+ }
+ 
+-static void element_copier(void *_payload, void *data, xmlChar *name)
++static void element_copier(void *_payload, void *data, const xmlChar *name)
+ {
+   VALUE hash = (VALUE)data;
+   xmlNodePtr payload = (xmlNodePtr)_payload;
+--- nokogiri-1.6.5/ext/nokogiri/xml_node.c~	2025-09-06 16:38:47.000000000 +0200
++++ nokogiri-1.6.5/ext/nokogiri/xml_node.c	2025-09-06 16:40:28.876662563 +0200
+@@ -14,7 +14,7 @@
+ 
+ static void mark(xmlNodePtr node)
+ {
+-  xmlNodePtr doc = node->doc;
++  xmlDocPtr doc = node->doc;
+   if(doc->type == XML_DOCUMENT_NODE || doc->type == XML_HTML_DOCUMENT_NODE) {
+     if(DOC_RUBY_OBJECT_TEST(doc)) {
+       rb_gc_mark(DOC_RUBY_OBJECT(doc));
+--- nokogiri-1.6.5/ext/nokogiri/xslt_stylesheet.c~	2025-09-06 16:45:01.000000000 +0200
++++ nokogiri-1.6.5/ext/nokogiri/xslt_stylesheet.c	2025-09-06 16:54:35.383329197 +0200
+@@ -214,7 +214,7 @@
+           (unsigned char *)StringValuePtr(method_name), uri, method_caller);
+     }
+ 
+-    Data_Get_Struct(ctxt->style->_private, nokogiriXsltStylesheetTuple,
++    Data_Get_Struct((VALUE)ctxt->style->_private, nokogiriXsltStylesheetTuple,
+                     wrapper);
+     inst = rb_class_new_instance(0, NULL, obj);
+     rb_ary_push(wrapper->func_instances, inst);
+@@ -227,7 +227,7 @@
+ {
+     nokogiriXsltStylesheetTuple *wrapper;
+ 
+-    Data_Get_Struct(ctxt->style->_private, nokogiriXsltStylesheetTuple,
++    Data_Get_Struct((VALUE)ctxt->style->_private, nokogiriXsltStylesheetTuple,
+                     wrapper);
+ 
+     rb_ary_clear(wrapper->func_instances);
