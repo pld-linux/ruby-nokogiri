@@ -1,0 +1,12 @@
+Remove mini_portile2 runtime dependency from gemspec.
+Not needed when building with --enable-system-libraries (system libxml2/libxslt).
+
+--- nokogiri-1.19.1.gemspec.orig
++++ nokogiri-1.19.1.gemspec
+@@ -26,6 +26,5 @@
+ 
+   s.specification_version = 4
+ 
+-  s.add_runtime_dependency(%q<mini_portile2>.freeze, ["~> 2.8.2".freeze])
+   s.add_runtime_dependency(%q<racc>.freeze, ["~> 1.4".freeze])
+ end
